@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Twitter.Business.Dtos.TopicDtos;
 using Twitter.Business.Exceptions.Topic;
 using Twitter.Business.Services.Interface;
@@ -15,7 +16,7 @@ namespace Twitter.API.Controllers
         {
             _service = service;
         }
-
+        [Authorize]
         [HttpGet]
         public IActionResult Get()
         {

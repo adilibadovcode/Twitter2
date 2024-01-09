@@ -22,7 +22,8 @@ namespace Twitter.Business
         {
             services.AddScoped<ITopicService, TopicService>();
             services.AddScoped<IEmailService, EmailService>();
-
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<ITokenService, TokenService>();
             return services;
         }
         public static IServiceCollection AddBusinessLayer(this IServiceCollection services)

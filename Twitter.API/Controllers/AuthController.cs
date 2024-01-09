@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Twitter.Business.Dtos.AuthoDtos;
 using Twitter.Business.ExternalServices.Interfaces;
+using Twitter.Business.Services.Interface;
 using Twitter.Core.Entities;
 
 namespace Twitter.API.Controllers
@@ -14,12 +15,14 @@ namespace Twitter.API.Controllers
         private readonly IEmailService _emailService;
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
+        IAuthService _authService { get; }
 
-        public AuthController(IEmailService emailService, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        public AuthController(IEmailService emailService, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IAuthService authService)
         {
             _userManager = userManager;
             _emailService = emailService;
             _signInManager = signInManager;
+            _authService = authService;
         }
 
         [HttpPost]
@@ -37,10 +40,18 @@ namespace Twitter.API.Controllers
                 };
                 var result = await _userManager.CreateAsync(user, vm.Password);
 
-                 _emailService.Send(user.Email,"drfewer","fedds");
             }
 
             return Ok();
+        }
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login(LoginDto dto)
+        {
+            //AppUser user;
+            //user = await _userManager.FindByNameAsync(dto.Username);
+            //await _signInManager.CheckPasswordSignInAsync(user, dto.Password, true);
+            //_emailService.Send(user.Email, "hello", "hello");
+            return Ok(await _authService.Login(dto));
         }
     }
 }
